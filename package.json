@@ -4,6 +4,10 @@
   "description": "一个支持 IoC 的 TypeScript Web 服务器框架（ham-web-server 1.x 的重构版）",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "!dist/test"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json && node scripts/copy-assets.js",
     "test": "npm run build && node --test \"dist/test/*.test.js\"",
@@ -23,10 +27,31 @@
     "ioc",
     "di",
     "typescript",
-    "framework"
+    "framework",
+    "web-framework",
+    "pm2",
+    "cluster",
+    "sqlite",
+    "mysql",
+    "orm",
+    "session",
+    "logging",
+    "pino",
+    "art-template"
   ],
-  "author": "as3long@qq.com (original 1.x), TypeScript 2.x rewrite",
+  "author": "as3long <as3long@qq.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/as3long/ham-web-server.git"
+  },
+  "homepage": "https://github.com/as3long/ham-web-server#readme",
+  "bugs": {
+    "url": "https://github.com/as3long/ham-web-server/issues"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "dependencies": {
     "art-template": "^4.13.2",
     "formidable": "^3.5.2",
