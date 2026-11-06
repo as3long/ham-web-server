@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>点餐 - 阿福小馆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/dinner.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <h1>阿福小馆</h1>
+    <p class="sub">ham-web-server 点餐示例 · 选好菜去购物车下单，凭取餐号出餐</p>
+    <nav class="tabs">
+      <a class="active" href="/dinner/">菜单</a>
+      <a href="/dinner/cart">购物车 ({{cartCount}})</a>
+    </nav>
+  </header>
+
+  {{if added}}
+  <div class="flash ok">「{{added}}」已加入购物车 · <a href="/dinner/cart">去结算</a></div>
+  {{/if}}
+
+  {{if error}}
+  <div class="flash err">{{error}}</div>
+  {{/if}}
+
+  {{each groups}}
+  <section class="cat">
+    <h2 class="cat-name">{{$value.category}}</h2>
+    <div class="dishes">
+      {{each $value.items}}
+      <article class="dish" id="dish-{{$value.id}}">
+        <div class="dish-main">
+          <b class="dish-name">{{$value.name}}</b>
+          <span class="desc">{{$value.description}}</span>
+        </div>
+        <div class="dish-side">
+          <span class="price">¥{{$value.priceYuan}}</span>
+          <form method="post" action="/dinner/cartAdd">
+            <input type="hidden" name="dishId" value="{{$value.id}}">
+            <button class="add-btn" type="submit">加入购物车</button>
+          </form>
+        </div>
+      </article>
+      {{/each}}
+    </div>
+  </section>
+  {{/each}}
+
+  <footer class="foot">
+    <a href="/dinner/cart">去购物车下单（合计 ¥{{cartTotalYuan}}）</a> ·
+    <a href="/dinner/order?no=">凭取餐号查单</a> ·
+    <a href="/dinner-admin/">店主入口</a>
+  </footer>
+</main>
+</body>
+</html>

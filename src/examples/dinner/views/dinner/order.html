@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>订单 - 阿福小馆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/dinner.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <h1>订单详情</h1>
+    <nav class="tabs">
+      <a href="/dinner/">菜单</a>
+      <a href="/dinner/cart">购物车</a>
+    </nav>
+  </header>
+
+  <section class="card center">
+    <p class="no-label">取餐号</p>
+    <p class="order-no">{{order.orderNo}}</p>
+    <p class="status-tag s{{order.status}}">{{statusText}}</p>
+  </section>
+
+  <section class="card">
+    <p class="meta-line">称呼：{{order.customer}}{{if order.tableNo}} · 桌号：{{order.tableNo}}{{/if}} ·
+      下单时间：{{$imports.formatDateTime(order.createdAt)}}</p>
+    <table class="cart-table">
+      <tr><th>菜品</th><th>单价</th><th>数量</th><th>小计</th></tr>
+      {{each items}}
+      <tr>
+        <td>{{$value.dishName}}</td>
+        <td>¥{{$value.priceYuan}}</td>
+        <td>×{{$value.quantity}}</td>
+        <td>¥{{$value.subtotalYuan}}</td>
+      </tr>
+      {{/each}}
+    </table>
+    <p class="total">应付：<b>¥{{totalYuan}}</b></p>
+  </section>
+
+  <section class="card">
+    <form method="get" action="/dinner/order" class="inline-form">
+      <input name="no" placeholder="输入取餐号，如 N1001" value="">
+      <button class="mini-btn" type="submit">查单</button>
+    </form>
+  </section>
+
+  <footer class="foot"><a href="/dinner/">« 回到菜单</a></footer>
+</main>
+</body>
+</html>

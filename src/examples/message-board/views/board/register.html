@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>注册 - 留言板</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="wrap narrow">
+  <header class="head">
+    <h1>注册</h1>
+    <p class="sub">注册成功后自动登录 · 第一个注册的用户自动成为管理员</p>
+  </header>
+
+  {{if error}}
+  <div class="flash err">{{error}}</div>
+  {{/if}}
+
+  <section class="form-card">
+    <form method="post" action="/board/register">
+      <div class="row">
+        <label>用户名</label>
+        <input name="username" maxlength="20" required placeholder="2-20 位中文/字母/数字/下划线" autofocus>
+      </div>
+      <div class="row">
+        <label>密码</label>
+        <input name="password" type="password" maxlength="64" required placeholder="至少 6 位">
+      </div>
+      <div class="row">
+        <label>确认密码</label>
+        <input name="confirm" type="password" maxlength="64" required placeholder="再输入一次">
+      </div>
+      <button type="submit">注册并登录</button>
+      <span class="alt">已有账号？<a href="/board/login">去登录</a></span>
+    </form>
+  </section>
+
+  <footer class="foot"><a href="/board/">« 返回留言板</a></footer>
+</main>
+</body>
+</html>

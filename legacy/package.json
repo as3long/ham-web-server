@@ -1,0 +1,26 @@
+{
+  "name": "ham-web-server",
+  "version": "1.0.4",
+  "description": "一个web服务器",
+  "main": "ham.js",
+  "dependencies": {
+    "art-template": "^4.12.2",
+    "dblite": "^0.8.0",
+    "ejs": "^2.5.7",
+    "es6-promise": "^4.2.2",
+    "formidable": "^1.1.1",
+    "mime": "^2.2.0",
+    "mysql": "^2.15.0",
+    "sql-query": "^0.1.26",
+    "xss": "^0.3.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "server"
+  ],
+  "author": "as3long@qq.com",
+  "license": "MIT"
+}

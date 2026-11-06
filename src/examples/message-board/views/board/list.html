@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>留言板 - Ham Web Server</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="head">
+    <h1>留言板</h1>
+    <p class="sub">ham-web-server 2.0 · TypeScript + IoC · 共 {{total}} 条留言</p>
+    <nav class="account">
+      {{if user}}
+      <span>欢迎，<b class="nick">{{user}}</b>{{if isAdmin}}<i class="badge">管理员</i>{{/if}}</span>
+      <a href="/board/password">修改密码</a>
+      <a href="/board/logout">登出</a>
+      {{else}}
+      <a href="/board/login">登录</a>
+      <a href="/board/register">注册</a>
+      {{/if}}
+    </nav>
+  </header>
+
+  {{if posted}}
+  <div class="flash ok">留言成功！</div>
+  {{/if}}
+  {{if passwordChanged}}
+  <div class="flash ok">密码修改成功，下次请使用新密码登录。</div>
+  {{/if}}
+
+  <section class="form-card">
+    {{if user}}
+    <form method="post" action="/board/add">
+      <div class="row">
+        <label>昵称（登录账号，不可修改）</label>
+        <input value="{{user}}" readonly>
+      </div>
+      <div class="row">
+        <label>留言内容</label>
+        <textarea name="content" maxlength="500" rows="3" required placeholder="说点什么吧…"></textarea>
+      </div>
+      <button type="submit">发表留言</button>
+    </form>
+    {{else}}
+    <p class="empty">登录后才能发表留言：<a href="/board/login">登录</a> 或 <a href="/board/register">注册</a></p>
+    {{/if}}
+  </section>
+
+  <section class="msgs">
+    {{if list.length === 0}}
+    <p class="empty">还没有留言，来抢沙发～</p>
+    {{/if}}
+    {{each list}}
+    <article class="msg">
+      <div class="msg-head">
+        <b class="nick">{{$value.nickname}}</b>{{if $value.isAdmin}}<i class="badge">管理员</i>{{/if}}
+        <span class="meta">
+          {{if isAdmin && $value.ip}}<span class="ip">IP:{{$value.ip}} · </span>{{/if}}#{{$value.id}} · {{$imports.formatDateTime($value.createdAt)}}
+          {{if isAdmin}}
+          <form class="inline-del" method="post" action="/board/adminDelete">
+            <input type="hidden" name="id" value="{{$value.id}}">
+            <button class="del-btn" type="submit" title="删除该留言">删除</button>
+          </form>
+          {{/if}}
+        </span>
+      </div>
+      <p class="content">{{$value.content}}</p>
+    </article>
+    {{/each}}
+  </section>
+
+  {{if pages > 1}}
+  <nav class="pager">
+    {{if page > 1}}<a href="/board/?page={{page - 1}}">« 上一页</a>{{/if}}
+    <span>第 {{page}} / {{pages}} 页</span>
+    {{if page < pages}}<a href="/board/?page={{page + 1}}">下一页 »</a>{{/if}}
+  </nav>
+  {{/if}}
+
+  <footer class="foot">
+    <a href="/board/api">JSON 接口</a> ·
+    <a href="/static/style.css">本页样式（静态资源示例）</a>
+  </footer>
+</main>
+</body>
+</html>

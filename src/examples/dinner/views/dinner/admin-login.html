@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>店主登录 - 阿福小馆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/dinner.css">
+</head>
+<body>
+<main class="wrap narrow">
+  <header class="head">
+    <h1>店主登录</h1>
+    <p class="sub">管理订单与菜单 · 演示口令：admin123</p>
+  </header>
+
+  {{if error}}
+  <div class="flash err">{{error}}</div>
+  {{/if}}
+
+  <section class="card">
+    <form method="post" action="/dinner-admin/login">
+      <div class="row">
+        <label>管理口令</label>
+        <input name="password" type="password" maxlength="64" required autofocus>
+      </div>
+      <button class="primary" type="submit">进入管理后台</button>
+      <span class="tip">口令可用环境变量 DINNER_ADMIN_PASSWORD 覆盖</span>
+    </form>
+  </section>
+
+  <footer class="foot"><a href="/dinner/">« 回到菜单</a></footer>
+</main>
+</body>
+</html>

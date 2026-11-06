@@ -1,0 +1,31 @@
+var url = require("url");
+var fs = require("fs");
+var mime = require('mime');
+/**
+ * [[检测是否为静态资源]]
+ * @param   {Object}   req [[Description]]
+ * @param   {[[Type]]} res [[Description]]
+ * @returns {bool} [[Description]]
+ */
+module.exports = function (req, res) {
+    var url_resource_reg = /.*\.(html|htm|gif|jpg|jpeg|bmp|webp|htc|swf|png|ico|txt|js|css)/;
+    if (!url_resource_reg.test(req.url)) {
+        return false;
+    }
+    var urlPares = url.parse(req.url);
+    var pathname = urlPares.pathname;
+    var fileUrl = APP_PATH + "/static" + pathname;
+    if (isFile(fileUrl)) {
+        var contentType = mime.getType(fileUrl);
+        res.setHeader('Content-Type', contentType || "text/plain");
+		res.setHeader('Cache-Control','public, max-age=120');
+        var fileStream = fs.createReadStream(fileUrl);
+        fileStream.pipe(res);
+        fileStream.on('end', function () {
+            res.end();
+        });
+        return true;
+    } else {
+        return false;
+    }
+}

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+data/
+.npm-cache/
+*.tgz
+.ham-temp/
+last.sql
+.acecode/

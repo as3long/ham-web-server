@@ -1,0 +1,67 @@
+;
+(function () {
+    //HAM的根目录
+    global.HAM_PATH = __dirname;
+
+    if (!global.APP_PATH) {
+        throw new Error('APP_PATH must be defined');
+    }
+    var Ham = {};
+    global.Ham = Ham;
+    global.$A = require("./amvc");
+    Ham.Class = require("./lib/Class");
+    //Ham工具方法写到这里
+    Ham.utils = require("./lib/lib/core/utils");
+
+    /**
+     * [404页面]
+     * @param {[[Type]]} req [[Description]]
+     * @param {[[Type]]} res [[Description]]
+     */
+    Ham._404Action = function (req, res) {
+        res.writeHead(404, {
+            "Content-Type": "text/plain; charset=utf-8;"
+        });
+        var str = [].slice.call(arguments, 2).join("|");
+        res.end("找不到网页|" + str);
+    };
+
+    /**
+     * [500错误页面]
+     * @param {[[Type]]} req [[Description]]
+     * @param {[[Type]]} res [[Description]]
+     */
+    Ham._500Action = function (req, res) {
+        res.writeHead(500, {
+            "Content-Type": "text/plain; charset=utf-8;"
+        });
+        res.end("服务器出现错误");
+    }
+
+    /**
+     * [Ham初始化]
+     */
+    Ham.init = function () {
+        require(HAM_PATH + '/lib/common/common.js');
+        var ham_config = require(HAM_PATH + '/lib/conf/config.js');
+        var app_config = require(APP_PATH + "/ham/conf/config.js");
+        Ham.utils.merge(ham_config, app_config, true);
+        Ham.config = ham_config;
+        if(ham_config.db_type=="sqlite"){
+             Ham.model = require("./lib/lib/core/Model2").create('main');
+        }else if(ham_config.db_type=="mysql"){
+             Ham.model = require("./lib/lib/core/MysqlModel").create('main');
+        }
+        Ham.cache = require("./lib/lib/utils/lrucache").lrucache;
+        Ham.BaseController = require("./lib/lib/core/BaseController");
+        Ham.Controller = require("./lib/lib/core/Controller");
+        Ham.checkStaticResource = require("./lib/lib/core/CheckStaticResource");
+        process.on('uncaughtException', function (err) {
+            console.error(isError(err) ? err.stack : err);
+        });
+    }
+    
+    Ham.run = require("./lib/lib/core/Run");
+    //Ham.loki = require("./lib/lib/core/LokiModel");
+    module.exports = Ham;
+})();

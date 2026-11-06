@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Ham Web Server 2.0</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<main class="card">
+  <h1>Ham Web Server <small>v{{version}}</small></h1>
+  <p>这是一个用 TypeScript 重构并加入 IoC 容器的 MVC 框架演示站点。</p>
+  <ul>
+    <li>服务器时间：<b>{{now}}</b>（来自注入的 TimeService）</li>
+    <li>已注册用户：<b>{{userCount}}</b> 位（来自注入的 UserService + SQLite）</li>
+  </ul>
+  <p>
+    <a href="/user/">用户列表</a> ·
+    <a href="/user/add">添加用户</a> ·
+    <a href="/user/api/1">JSON 接口</a> ·
+    <a href="/index/time">时间接口</a>
+  </p>
+</main>
+</body>
+</html>

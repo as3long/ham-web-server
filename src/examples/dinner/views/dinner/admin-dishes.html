@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>菜品管理 - 阿福小馆</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/static/dinner.css">
+</head>
+<body>
+<main class="wrap wide">
+  <header class="head">
+    <h1>菜品管理</h1>
+    <nav class="tabs">
+      <a href="/dinner-admin/">订单</a>
+      <a class="active" href="/dinner-admin/dishes">菜品</a>
+      <a href="/dinner/" target="_blank">前台菜单</a>
+      <a href="/dinner-admin/logout">登出</a>
+    </nav>
+  </header>
+
+  {{if error}}
+  <div class="flash err">{{error}}</div>
+  {{/if}}
+
+  <section class="card">
+    <table class="cart-table admin-table">
+      <tr><th>菜品</th><th>分类</th><th>价格</th><th>状态</th><th>操作</th></tr>
+      {{each list}}
+      <tr>
+        <td class="items"><b>{{$value.name}}</b><br><span class="desc">{{$value.description}}</span></td>
+        <td>{{$value.category}}</td>
+        <td>¥{{$value.priceYuan}}</td>
+        <td>{{if $value.isAvailable === 1}}<span class="status-tag s2">在售</span>{{else}}<span class="status-tag s3">已下架</span>{{/if}}</td>
+        <td class="ops">
+          <a class="mini-btn" href="/dinner-admin/dishes?edit={{$value.id}}">编辑</a>
+          <form class="inline-form" method="post" action="/dinner-admin/dishToggle">
+            <input type="hidden" name="id" value="{{$value.id}}">
+            <button class="mini-btn" type="submit">{{$value.isAvailable === 1 ? '下架' : '上架'}}</button>
+          </form>
+          <form class="inline-form" method="post" action="/dinner-admin/dishDelete">
+            <input type="hidden" name="id" value="{{$value.id}}">
+            <button class="mini-btn danger" type="submit">删除</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </table>
+  </section>
+
+  <section class="card">
+    <h3 class="sec-title">{{if editing}}编辑菜品：{{editing.name}}{{else}}新增菜品{{/if}}</h3>
+    <form method="post" action="/dinner-admin/dishSave" class="submit-form">
+      <input type="hidden" name="id" value="{{if editing}}{{editing.id}}{{else}}0{{/if}}">
+      <div class="row">
+        <label>名称</label>
+        <input name="name" maxlength="30" required value="{{if editing}}{{editing.name}}{{/if}}">
+      </div>
+      <div class="row">
+        <label>分类</label>
+        <input name="category" maxlength="10" placeholder="招牌菜/主食/小吃饮品/甜品" value="{{if editing}}{{editing.category}}{{/if}}">
+      </div>
+      <div class="row">
+        <label>价格（元）</label>
+        <input name="priceYuan" inputmode="decimal" required placeholder="如 28.8" value="{{if editing}}{{(editing.price / 100).toFixed(2)}}{{/if}}">
+      </div>
+      <div class="row">
+        <label>描述</label>
+        <input name="description" maxlength="60" value="{{if editing}}{{editing.description}}{{/if}}">
+      </div>
+      <button class="primary" type="submit">保存</button>
+      {{if editing}}<a class="tip" href="/dinner-admin/dishes">取消编辑（改为新增）</a>{{/if}}
+    </form>
+  </section>
+
+  <footer class="foot"><a href="/dinner-admin/">« 订单管理</a></footer>
+</main>
+</body>
+</html>
